@@ -62,4 +62,9 @@ describe User do
     subject.save
     expect(subject.admin).to be false
   end
+
+  it "can access his meals" do
+    subject.save
+    expect(subject.meals).to be_kind_of ActiveRecord::Associations::CollectionProxy 
+  end
 end
