@@ -57,4 +57,9 @@ describe User do
 
     expect(subject.authenticate(wrong_password)).to be false
   end
+
+  it "sets admin attribute to false by default" do
+    subject.save
+    expect(subject.admin).to be false
+  end
 end
