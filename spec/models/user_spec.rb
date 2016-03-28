@@ -1,34 +1,45 @@
 require 'rails_helper'
 
 describe User do
+
+  subject { build(:user) }
+
   it "has a valid factory" do
-    expect(build(:user)).to be_valid
+    expect(subject).to be_valid
   end
   
   it "is invalid without email" do
-    expect(build(:user, email: nil)).not_to be_valid
+    subject.email = nil
+    expect(subject).not_to be_valid
   end
 
   it "is invalid without name" do
-    expect(build(:user, name: nil)).not_to be_valid
+    subject.name = nil
+    expect(subject).not_to be_valid
   end
   
   it "is invalid without password" do
-    expect(build(:user, password: nil, password_confirmation: nil)).not_to be_valid
+    subject.password = subject.password_confirmation = nil
+    expect(subject).not_to be_valid
   end
 
   it "is invalid with negative expected calories" do
-    expect(build(:user, expected_calories: -10)).not_to be_valid
+    sybhect.expected_calories = -10
+    expect(subject).not_to be_valid
   end
 
   it "validates the name" do
-    expect(build(:user, name: '!Wrong Name')).not_to be_valid
+    subject.name = "!Wrong Name"
+    expect(subject).not_to be_valid
   end
 
   it "validates the uniqueness of e-mail" do
     create(:user)
-    user = build(:user)
-    user.valid?
-    expect(user.errors.messages.try(:[], :email)).not_to be_empty
+    subject.valid?
+    expect(subject.errors.messages.try(:[], :email)).not_to be_empty
   end
+
+  it "authenticates with correct password" do
+  end
+  it "doesn't authenticate with wrong password"
 end
