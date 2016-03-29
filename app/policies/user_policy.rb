@@ -13,6 +13,6 @@ class UserPolicy < ApplicationPolicy
   end
 
   def create?
-    user.nil? || user.admin?
+    user.nil?
   end
 end

@@ -22,6 +22,8 @@ module Api
       rescue_from NotAuthenticatedError, with: :user_not_authenticated
       rescue_from AccessDeniedError, Pundit::NotAuthorizedError, with: :access_denied
       rescue_from ActiveRecord::RecordNotFound, with: :not_found
+      rescue_from ActionController::ParameterMissing, with: :bad_request
+
 
       protected
         def render(params)
@@ -81,6 +83,10 @@ module Api
         # Rendering other common errors
         def not_found
           render json: nil, status: :not_found
+        end
+
+        def bad_request
+          render json: nil, status: :bad_request
         end
 
     end

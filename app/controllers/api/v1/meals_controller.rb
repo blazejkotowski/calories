@@ -4,8 +4,6 @@ module Api
       before_action :authenticate!, :find_user
       before_action :find_meal, only: [:update, :destroy, :show]
 
-      rescue_from ActionController::ParameterMissing, with: :bad_request
-
       def index
         raise AccessDeniedError unless 
           UserPolicy.new(current_user, @user).index_meals?
@@ -55,10 +53,6 @@ module Api
 
         def meal_params
           params.require(:meal).permit(:description, :calories_number, :consumption_date, :consumption_time)
-        end
-
-        def bad_request
-          render json: nil, status: :bad_request
         end
 
     end

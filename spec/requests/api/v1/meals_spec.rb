@@ -4,12 +4,12 @@ require_relative "./api_config.rb"
 describe "Meals API" do
   include_context 'api config'
 
-  let(:base_url) { "#{base_api_url}/users/#{user.id}/meals" }
+  let(:base_url) { "#{base_api_url}/users/#{@user.id}/meals" }
 
 
   shared_examples "the same user" do
     it "retrieves user's meals" do
-      10.times { create(:meal, user: user) }
+      10.times { create(:meal, user: @user) }
 
       get base_url, nil, auth_headers
       expect(response).to have_http_status(:ok)
@@ -22,7 +22,7 @@ describe "Meals API" do
 
       expect { 
         post base_url, params, auth_headers 
-      }.to change{ user.meals.count }.by(1) 
+      }.to change{ @user.meals.count }.by(1) 
       expect(response).to have_http_status(:created)
     end
 
@@ -32,13 +32,13 @@ describe "Meals API" do
 
       expect {
         post base_url, params, auth_headers
-      }.not_to change{ user.meals.count }
+      }.not_to change{ @user.meals.count }
       expect(json['errors']).not_to be_empty
       expect(response).to have_http_status(:bad_request)
     end
 
     it "updates user's meal" do
-      meal = create(:meal, user: user)
+      meal = create(:meal, user: @user)
       params = { meal: { description: 'new description' } }
 
       put "#{base_url}/#{meal.id}", params, auth_headers
@@ -48,16 +48,16 @@ describe "Meals API" do
     end
 
     it "destroys user's meal" do
-      meal = create(:meal, user: user)
+      meal = create(:meal, user: @user)
 
       expect { 
         delete "#{base_url}/#{meal.id}", nil, auth_headers
-      }.to change{ user.meals.count }.by(-1)
+      }.to change{ @user.meals.count }.by(-1)
       expect(response).to have_http_status(:no_content)
     end
 
     it "shows user's meal" do
-      meal = create(:meal, user: user)
+      meal = create(:meal, user: @user)
 
       get "#{base_url}/#{meal.id}", nil, auth_headers
       expect(response).to have_http_status(:ok)
@@ -65,7 +65,7 @@ describe "Meals API" do
     end
 
     it "doesn't find a meal with wrong id" do
-      meal = create(:meal, user: user)
+      meal = create(:meal, user: @user)
       id = meal.id
       meal.destroy
 
@@ -77,17 +77,17 @@ describe "Meals API" do
 
   context "accessed by admin" do
     it_should_behave_like "the same user" do
-      let(:current_user) { admin }
+      let(:current_user) { @admin }
     end
   end
   context "accessed by the same user" do
     it_should_behave_like "the same user" do
-      let(:current_user) { user } 
+      let(:current_user) { @user } 
     end
   end
 
   context "accessed by other user" do
-    let(:current_user) { other_user }
+    let(:current_user) { @other_user }
 
     it "denies to retrieve user's entries" do
       get base_url, nil, auth_headers
@@ -100,19 +100,19 @@ describe "Meals API" do
     end
 
     it "denies to update user's entry" do
-      meal = create(:meal, user: user)
+      meal = create(:meal, user: @user)
       put "#{base_url}/#{meal.id}", nil, auth_headers
       expect(response).to have_http_status(:forbidden)
     end
 
     it "denies to destroy user's entry" do
-      meal = create(:meal, user: user)
+      meal = create(:meal, user: @user)
       delete "#{base_url}/#{meal.id}", nil, auth_headers
       expect(response).to have_http_status(:forbidden)
     end
 
     it "denies to show user's entry" do
-      meal = create(:meal, user: user)
+      meal = create(:meal, user: @user)
       get "#{base_url}/#{meal.id}", nil, auth_headers
       expect(response).to have_http_status(:forbidden)
     end
