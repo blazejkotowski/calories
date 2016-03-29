@@ -6,6 +6,15 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'spec_helper'
 require 'rspec/rails'
 require 'pundit/rspec'
+
+module Requests
+  module JsonHelpers
+    def json
+      JSON.parse(response.body, quirks_mode: true)
+    end
+  end
+end
+
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Checks for pending migration and applies them before tests are run.
@@ -23,4 +32,5 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
 
   config.include FactoryGirl::Syntax::Methods
+  config.include Requests::JsonHelpers, type: :request
 end
