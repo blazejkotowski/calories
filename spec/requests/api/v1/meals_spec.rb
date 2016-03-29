@@ -1,16 +1,11 @@
 require 'rails_helper'
+require_relative "./api_config.rb"
 
 describe "Meals API" do
-  let(:base_url) { "/api/v1/users/#{user.id}/meals"}
+  include_context 'api config'
 
-  let(:user) { create(:user) }
-  let(:other_user) { create(:user, email: 'other@example.com') }
-  let(:admin) { create(:user, email: 'admin@example.com', admin: true) }
-  let(:password) { build(:user).password }
+  let(:base_url) { "#{base_api_url}/users/#{user.id}/meals" }
 
-  let!(:auth_headers) { auth_headers_hash(current_user.email, password) }
-
-  before(:context) { clear_auth_token }
 
   shared_examples "the same user" do
     it "retrieves user's meals" do
