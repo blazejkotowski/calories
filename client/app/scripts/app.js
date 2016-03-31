@@ -28,26 +28,56 @@ angular
       .when('/signin', {
         templateUrl: 'views/signin.html',
         controller: 'SigninCtrl',
-        controllerAs: 'signin'
+        controllerAs: 'signin',
+        data: { loggedIn: false }
       })
       .when('/signup', {
         templateUrl: 'views/signup.html',
         controller: 'SignupCtrl',
-        controllerAs: 'signup'
+        controllerAs: 'signup',
+        data: { loggedIn: false }
       })
-      .when('/signup', {
-        templateUrl: 'views/signup.html',
-        controller: 'SignupCtrl',
-        controllerAs: 'signup'
+      .when('/dashboard', {
+        templateUrl: 'views/dashboard.html',
+        controller: 'DashboardCtrl',
+        controllerAs: 'dashboard',
+        data: {
+          loggedIn: true,
+          admin: false
+        }
+      })
+      .when('/admin', {
+        templateUrl: 'views/admin.html',
+        controller: 'AdminCtrl',
+        controllerAs: 'admin',
+        data: {
+          loggedIn: true,
+          admin: true
+        }
       })
       .otherwise({
         redirectTo: '/signin'
       });
   })
-  .run(function($rootScope) {
+  .run(function($rootScope, $location, AuthService) {
     $rootScope.global_notifications = {
       errors: [],
       success: [],
       information: []
     };
+
+    $rootScope.$on("$routeChangeStart", function(event, next, current) {
+      if(next.data.loggedIn) {
+        if(!AuthService.currentUser()) { 
+          $location.path('/signin');
+        }
+        else if(next.data.admin && !AuthService.currentUser().isAdmin()) {
+          $location.path('/dashboard');
+        }
+      } else {
+        if(AuthService.currentUser()) {
+          $location.path('/dashboard');
+        }
+      }
+    });
   });

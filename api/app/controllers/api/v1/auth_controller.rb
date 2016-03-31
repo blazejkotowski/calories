@@ -17,7 +17,7 @@ module Api
           end
           {
             auth_token: AuthToken.encode({ user_id: user.id }),
-            user: user.as_json(only: [:id, :email, :expected_calories])
+            user: user.as_json(only: [:id, :email, :expected_calories, :name, :admin])
           }
         end
     end

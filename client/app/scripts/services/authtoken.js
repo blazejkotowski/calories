@@ -8,16 +8,14 @@
  * Factory in the clientApp.
  */
 angular.module('clientApp')
-  .factory('AuthToken', function ($cookies) {
-    var auth_token = $cookies.get('auth_token');
+  .factory('AuthToken', function () {
+    var authToken = null;
     return {
       get: function() {
-        return auth_token;
+        return authToken;
       },
-      set: function(new_token) {
-        var exp = new Date().getDate() + 1;
-        auth_token = new_token;
-        $cookies.put(auth_token, { expires: exp });
+      set: function(newToken) {
+        authToken = newToken;
       }
     };
   });

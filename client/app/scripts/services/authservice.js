@@ -8,7 +8,12 @@
  * Factory in the clientApp.
  */
 angular.module('clientApp')
-  .factory('AuthService', ['$http', '$q', '$rootScope', 'AuthToken', 'api_base_url', function ($http, $q, $rootScope, AuthToken, api_base_url) {
+  .factory('AuthService', 
+    ['$http', '$q', '$rootScope', 'AuthToken', 'UserFactory', 'api_base_url',
+     function ($http, $q, $rootScope, AuthToken, UserFactory, api_base_url) {
+
+    var currentUser = null;
+
     return {
       login: function(email, password) {
         var deferred = $q.defer();
@@ -18,7 +23,8 @@ angular.module('clientApp')
         }).then(function(response) {
           var data = response.data || {};
           AuthToken.set(data.auth_token);
-          deferred.resolve(data.user);
+          currentUser = new UserFactory(data.user);
+          deferred.resolve();
         }, function(response) {
           response = response || {};
           var data = response.data || {};
@@ -37,6 +43,9 @@ angular.module('clientApp')
             deferred.reject(data.errors || null);
           });
         return deferred.promise;
+      },
+      currentUser: function() {
+        return currentUser;
       }
     };
   }]);
