@@ -16,7 +16,7 @@ angular.module('clientApp')
     self.submit = function () {
       var deferred = AuthService.login(self.email, self.password);
       deferred.then(function() {
-        var path = AuthService.currentUser().isAdmin() ? '/admin' : '/dashboard';
+        var path = AuthService.getCurrentUser().isAdmin() ? '/admin' : '/dashboard';
         $location.path(path);
         self.errors = null;
       }, function(errors) {

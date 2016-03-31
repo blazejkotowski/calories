@@ -17,13 +17,14 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
+    'angular-storage'
   ])
   .constant('AuthEvents', {
     loginSuccess: 'login_success',
     loginFailed: 'login_failed'
   })
   .constant('api_base_url', 'http://localhost:3000/api/v1')
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $httpProvider) {
     $routeProvider
       .when('/signin', {
         templateUrl: 'views/signin.html',
@@ -58,24 +59,30 @@ angular
       .otherwise({
         redirectTo: '/signin'
       });
+
+      $httpProvider.interceptors.push('AuthInterceptor');
   })
-  .run(function($rootScope, $location, AuthService) {
+  .run(function($rootScope, $location, AuthService, AuthEvents) {
     $rootScope.global_notifications = {
       errors: [],
       success: [],
       information: []
     };
 
+    $rootScope.$on(AuthEvents.loginSuccess, function() {
+      $rootScope.currentUser = AuthService.getCurrentUser();
+    });
+
     $rootScope.$on("$routeChangeStart", function(event, next, current) {
       if(next.data.loggedIn) {
-        if(!AuthService.currentUser()) { 
+        if(!AuthService.getCurrentUser()) {
           $location.path('/signin');
         }
-        else if(next.data.admin && !AuthService.currentUser().isAdmin()) {
+        else if(next.data.admin && !AuthService.getCurrentUser().isAdmin()) {
           $location.path('/dashboard');
         }
       } else {
-        if(AuthService.currentUser()) {
+        if(AuthService.getCurrentUser()) {
           $location.path('/dashboard');
         }
       }

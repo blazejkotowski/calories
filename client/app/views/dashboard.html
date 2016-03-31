@@ -1,1 +1,42 @@
-<p>This is the dashboard view.</p>
+<h1>Hello {{ dashboard.user.name }}!</h1>
+<div class="panel panel-default">
+  <div class="panel-heading">Expected daily calories</div>
+  <div class="panel-body">
+    <div class="col-sm-6">
+      <p class="text-right">
+        This the amount of calories you would maximally consume every day. 
+        If you exceed this amount, it will be marked red.
+      </p>
+    </div>
+    <div class="col-sm-6">
+      <form ng-submit="dashboard.updateExpectedCalories()">
+        <div class="form-group">
+          <input class="form-control" ng-model="dashboard.user.expected_calories" />
+          <span class="helper-block"></span>
+        </div>
+        <button type="submit" class="btn btn-default">Save</button>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">List of your meals</div>
+  <div class="panel-body">
+    <table class="table">
+      <thead>
+        <th>Consumption date</th>
+        <th>Consumption time</th>
+        <th>Meal description</th>
+        <th>Calories number</th>
+      </thead>
+      <tbody>
+        <tr ng-repeat="meal in dashboard.meals">
+          <td>{{meal.consumption_date}}</td>
+          <td>{{meal.consumption_time}}</td>
+          <td>{{meal.description}}</td>
+          <td>{{meal.calories_number}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

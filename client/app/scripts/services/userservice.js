@@ -8,7 +8,7 @@
  * Factory in the clientApp.
  */
 angular.module('clientApp')
-  .factory('AuthToken', function () {
+  .factory('AuthToken', function() {
     var authToken = null;
     return {
       get: function() {

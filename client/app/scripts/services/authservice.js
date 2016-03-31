@@ -9,9 +9,10 @@
  */
 angular.module('clientApp')
   .factory('AuthService', 
-    ['$http', '$q', '$rootScope', 'AuthToken', 'UserFactory', 'api_base_url',
-     function ($http, $q, $rootScope, AuthToken, UserFactory, api_base_url) {
+    ['$log', '$http', '$q', '$rootScope', 'AuthEvents', 'UserFactory', 'api_base_url', 'store',
+     function ($log, $http, $q, $rootScope, AuthEvents, UserFactory, api_base_url, store) {
 
+    var authToken = null;
     var currentUser = null;
 
     return {
@@ -22,8 +23,13 @@ angular.module('clientApp')
           password: password
         }).then(function(response) {
           var data = response.data || {};
-          AuthToken.set(data.auth_token);
-          currentUser = new UserFactory(data.user);
+
+          authToken = data.auth_token;
+          store.set('authToken', authToken);
+          currentUser = data.user;
+          store.set('currentUser', currentUser);
+
+          $rootScope.$broadcast(AuthEvents.loginSuccess);
           deferred.resolve();
         }, function(response) {
           response = response || {};
@@ -32,6 +38,7 @@ angular.module('clientApp')
         });
         return deferred.promise;
       },
+
       register: function(params) {
         var deferred = $q.defer();
         $http.post(api_base_url + "/users", params)
@@ -44,8 +51,19 @@ angular.module('clientApp')
           });
         return deferred.promise;
       },
-      currentUser: function() {
-        return currentUser;
-      }
+
+      getCurrentUser: function() {
+        if(!currentUser) {
+          currentUser = store.get('currentUser');
+        }
+        return new UserFactory(currentUser);
+      },
+
+      getAuthToken: function() {
+        if(!authToken) {
+          authToken = store.get('authToken');
+        }
+        return authToken;
+      },
     };
   }]);

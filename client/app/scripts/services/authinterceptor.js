@@ -8,11 +8,11 @@
  * Factory in the clientApp.
  */
 angular.module('clientApp')
-  .factory('AuthInterceptor', function ($q, $injector) {
+  .factory('AuthInterceptor', function ($q, $injector, $log) {
     return {
       request: function(config) {
-        var AuthToken = $injector.get("AuthToken");
-        var auth_token = AuthToken.get();
+        var UserService = $injector.get("AuthService");
+        var auth_token = UserService.getAuthToken();
         config.headers = config.headers || {};
         if(auth_token) {
           config.headers.Authorization = "Bearer " + auth_token;
