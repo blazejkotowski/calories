@@ -3,10 +3,10 @@ module Api
     class AuthController < BaseApiController
       def authenticate
         u = User.find_by_email(params['email'])
-        if u.authenticate(params['password'])
+        if u && u.authenticate(params['password'])
           render json: authentication_payload(u), status: :ok
         else
-          render json: nil, status: :unauthorized
+          render json: { errors: ["Authentication failed"] }, status: :unauthorized
         end
       end
 

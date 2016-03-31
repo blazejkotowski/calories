@@ -21,5 +21,13 @@ describe "Auth API" do
     post '/api/v1/authenticate', { email: user.email, password: wrong_password }
 
     expect(response).to have_http_status :unauthorized
+    expect(json['errors']).not_to be_empty
+  end
+
+  it "doesn't authenticate non existent user" do
+    post "/api/v1/authenticate", { email: "wrong email", password: "random" }
+
+    expect(response).to have_http_status :unauthorized
+    expect(json['errors']).not_to be_empty
   end
 end
