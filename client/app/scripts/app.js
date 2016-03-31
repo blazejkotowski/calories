@@ -16,8 +16,13 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
   ])
+  .constant('AuthEvents', {
+    loginSuccess: 'login_success',
+    loginFailed: 'login_failed'
+  })
+  .constant('api_base_url', 'http://localhost:3000/api/v1')
   .config(function ($routeProvider) {
     $routeProvider
       .when('/signin', {
@@ -25,7 +30,24 @@ angular
         controller: 'SigninCtrl',
         controllerAs: 'signin'
       })
+      .when('/signup', {
+        templateUrl: 'views/signup.html',
+        controller: 'SignupCtrl',
+        controllerAs: 'signup'
+      })
+      .when('/signup', {
+        templateUrl: 'views/signup.html',
+        controller: 'SignupCtrl',
+        controllerAs: 'signup'
+      })
       .otherwise({
         redirectTo: '/signin'
       });
+  })
+  .run(function($rootScope) {
+    $rootScope.global_notifications = {
+      errors: [],
+      success: [],
+      information: []
+    };
   });
