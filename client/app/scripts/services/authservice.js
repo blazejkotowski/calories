@@ -52,9 +52,20 @@ angular.module('clientApp')
         return deferred.promise;
       },
 
+      logout: function() {
+        store.set('currentUser', null);
+        store.set('authToken', null);
+        authToken = null;
+        currentUser = null;
+        $rootScope.$broadcast(AuthEvents.logout);
+      },
+
       getCurrentUser: function() {
         if(!currentUser) {
           currentUser = store.get('currentUser');
+        }
+        if(!currentUser) {
+          return null;
         }
         return new UserFactory(currentUser);
       },

@@ -20,6 +20,8 @@ angular.module('clientApp')
         return config || $q.when(config);
       },
       responseError: function(response) {
+        var AuthService = $injector.get('AuthService');
+        AuthService.logout();
         return $q.reject(response);
       }
     };
