@@ -20,7 +20,7 @@ angular.module('clientApp')
         return config || $q.when(config);
       },
       responseError: function(response) {
-        return response || $q.when(response);
+        return $q.reject(response);
       }
     };
   });

@@ -11,7 +11,7 @@ angular.module('clientApp')
   .factory('UserFactory', function (api_base_url, $resource) {
     var url = api_base_url + "/users/:user_id";
     var User =  $resource(url,
-      { $user_id: "@id" },
+      { user_id: "@id" },
       { update: { method: "PUT", transformRequest: function(data, headers) {
         return JSON.stringify({ user: data });
       } } }
