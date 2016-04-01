@@ -66,6 +66,16 @@ angular
           currentTab: 'admin'
         }
       })
+      .when('/admin/users/:user_id', {
+        templateUrl: 'views/dashboard.html',
+        controller: 'DashboardCtrl',
+        controllerAs: 'dashboard',
+        data: {
+          loggedIn: true,
+          admin: true,
+          currentTab: 'admin',
+        }
+      })
       .when('/signout', {
         data: {
           signout: true,

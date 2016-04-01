@@ -7,7 +7,7 @@ module Api
       def index
         authorize User
         users = User.all
-        body = { users: users.as_json(only: [:name, :email], root: true)}
+        body = { users: users.as_json(only: [:name, :email, :id, :created_at], root: true)}
         render json: { users: users }, status: :ok
       end
 
@@ -23,7 +23,7 @@ module Api
 
       def show
         authorize @user
-        render json: { user: @user.as_json(only: [:name, :email, :expected_calories]) }, status: :ok
+        render json: { user: @user.as_json(only: [:name, :email, :expected_calories, :id, :created_at]) }, status: :ok
       end
       
       def update

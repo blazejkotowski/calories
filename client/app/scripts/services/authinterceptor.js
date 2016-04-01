@@ -21,7 +21,9 @@ angular.module('clientApp')
       },
       responseError: function(response) {
         var AuthService = $injector.get('AuthService');
-        AuthService.logout();
+        if(response.status == 401) {
+          AuthService.logout();
+        }
         return $q.reject(response);
       }
     };

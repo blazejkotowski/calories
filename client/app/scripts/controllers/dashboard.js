@@ -8,10 +8,30 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('DashboardCtrl', function (AuthService, UserFactory, MealFactory, $uibModal, $log) {
+  .controller('DashboardCtrl', function ($q, AuthService, UserFactory, MealFactory, $uibModal, $route, $routeParams, $log) {
     var self = this;
     self.user = AuthService.getCurrentUser();
+
+    var fetchingUser = $q.defer();
+
+    $log.debug($route.current.data);
+    if($route.current.data.admin) {
+      var userid = $routeParams.user_id;
+      UserFactory.get({ user_id: userid }).$promise.then(function(data) {
+        self.user = new UserFactory(data.user);
+        fetchingUser.resolve();
+      });
+    } else {
+      fetchingUser.resolve();
+    }
+
     self.meals = [];
+
+    fetchingUser.promise.then(function() {
+      var mealsResponse = MealFactory.get({ user_id: self.user.id }, function() {
+        self.meals = mealsResponse.meals;  
+      });
+    });
 
     self.savingUser = false;
     self.savingMeal = false;
@@ -41,10 +61,6 @@ angular.module('clientApp')
     };
 
     /* Managing meals */
-    var mealsResponse = MealFactory.get({ user_id: self.user.id }, function() {
-      self.meals = mealsResponse.meals;  
-    });
-
     self.editMeal = function(meal) {
       var mealCopy = angular.copy(meal);
       self.openModal(meal, mealCopy);

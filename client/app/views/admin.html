@@ -1,1 +1,31 @@
-<p>This is the admin view.</p>
+<h1>Administration panel</h1>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Manage users
+  </div>
+  <div class="panel-body">
+    <table class="table table-striped">
+      <thead>
+        <th>Full name</th>
+        <th>Email</th>
+        <th>Created at</th>
+        <th>Actions</th>
+      </thead>
+      <tbody>
+        <tr ng-repeat="user in admin.users">
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.created_at | date:'dd MMMM yyyy' }}</td>
+          <td>
+            <button type="button" class="btn btn-xs btn-danger" ng-click="admin.deleteUser(user)">
+              <span class="glyphicon glyphicon-remove"></span>
+            </button>
+            <button type="button" class="btn btn-xs btn-primary" ng-click="admin.userDashboard(user)">
+              <span class="glyphicon glyphicon-pencil"></span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
