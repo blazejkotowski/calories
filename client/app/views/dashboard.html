@@ -1,5 +1,5 @@
 <h1>Hello {{ dashboard.user.name }}!</h1>
-<div class="panel" ng-class="{ 'panel-default': !dashboard.calories_exceeded(), 'panel-danger': dashboard.caloriesExceeded()}">
+<div class="panel" ng-class="{ 'panel-success': !dashboard.calories_exceeded(), 'panel-danger': dashboard.caloriesExceeded()}">
   <div class="panel-heading">Expected daily calories</div>
   <div class="panel-body">
     <div class="alert alert-danger" ng-if="dashboard.errors.expected_calories">The value {{ dashboard.errors.expected_calories }}</div>
@@ -12,7 +12,7 @@
     </div>
     <div class="col-sm-6">
       <form ng-submit="dashboard.updateExpectedCalories()">
-        <div class="form-group" ng-class="{ 'has-error': (dashboard.calories_exceeded() || dashboard.errors.expected_calories )}">
+        <div class="form-group" ng-class="{ 'has-error': (dashboard.calories_exceeded() || dashboard.errors.expected_calories ), 'has-success': !(dashboard.calories_exceeded() || dashboard.errors.expected_calories )}">
           <input class="form-control" ng-model="dashboard.user.expected_calories" ng-disabled="dashboard.savingUser" />
           <span class="helper-block">You have consumed {{dashboard.todaysCalories()}} so far.</span>
         </div>
