@@ -15,6 +15,11 @@ module Api
       include Pundit
 
       before_action :set_content_type
+      before_action do 
+        if Rails.env.development?
+          sleep 1
+        end
+      end
 
       attr_reader :current_user
 
