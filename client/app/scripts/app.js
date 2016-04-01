@@ -94,6 +94,16 @@ angular
       $rootScope.currentUser = AuthService.getCurrentUser();
     });
 
+    $rootScope.getNotifications = function() {
+      var res = angular.copy($rootScope.global_notifications);
+      $rootScope.global_notifications = {
+        errors: [],
+        success: [],
+        information: []
+      }
+      return res;
+    }
+
     $rootScope.$route = $route;
 
     $rootScope.$on("$routeChangeStart", function(event, next, current) {

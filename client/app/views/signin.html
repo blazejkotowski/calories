@@ -3,9 +3,9 @@
     <h3 class="panel-title">Sign in</h3>
   </div>
   <div class="panel-body">
-    <div class="alert alert-danger" ng-repeat="error in signin.errors">{{error}}</div>
-    <div class="alert alert-success" ng-repeat="success in global_notifications.success">{{success}}</div>
-    <div class="alert alert-info" ng-repeat="info in global_notifications.information">{{info}}</div>
+    <div class="alert alert-danger" ng-repeat="error in signin.notifications.errors">{{error}}</div>
+    <div class="alert alert-success" ng-repeat="success in signin.notifications.success">{{success}}</div>
+    <div class="alert alert-info" ng-repeat="info in signin.notifications.information">{{info}}</div>
     <form class="form-horizontal" ng-submit="signin.submit()">
       <div class="form-group">
         <label class="col-sm-2 control-label" for="email">E-mail</label>
