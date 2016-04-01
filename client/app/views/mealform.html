@@ -1,0 +1,21 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="modal.close()"><span aria-hidden="true">&times;</span></button>
+  <h4 class="modal-title">{{ modal.meal.id ? 'Edit' : 'Add'}} meal</h4>
+</div>
+<div class="modal-body">
+  <div class="form-group" ng-class="{'has-error': modal.errors.description}">
+    <label for="description">Description</label>
+    <input type="text" class="form-control" name="description" ng-model="modal.meal.description" />
+    <span class="help-block" ng-repeat="error in modal.errors.description">{{error}}</span>
+  </div>
+  <div class="form-group" ng-class="{'has-error': modal.errors.calories_number}">
+    <label for="calories">Calories number</label>
+    <input type="number" class="form-control" name="calories" ng-model="modal.meal.calories_number" />
+    <span class="help-block" ng-repeat="error in modal.errors.calories_number">{{error}}</span>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="pull-left btn btn-danger" ng-click="modal.delete()">Delete</button>
+  <button type="button" class="btn btn-default" ng-click="modal.close()">Cancel</button>
+  <button type="button" class="btn btn-primary" data-dismiss="false" ng-click="modal.save()">Save</button>
+</div>

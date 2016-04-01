@@ -17,7 +17,8 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'angular-storage'
+    'angular-storage',
+    'ui.bootstrap'
   ])
   .constant('AuthEvents', {
     loginSuccess: 'login_success',

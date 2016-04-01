@@ -8,25 +8,25 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('DashboardCtrl', function (AuthService, UserFactory, MealFactory, $log) {
+  .controller('DashboardCtrl', function (AuthService, UserFactory, MealFactory, $uibModal, $log) {
     var self = this;
     self.user = AuthService.getCurrentUser();
     self.meals = [];
-    self.currentMeal = null;
 
     self.savingUser = false;
     self.savingMeal = false;
 
-    self.errors = {}
+    self.errors = {};
 
     var mealsResponse = MealFactory.get({ user_id: self.user.id }, function() {
       self.meals = mealsResponse.meals;  
     });
 
     /* Managing meals */
-    self.setMeal = function(meal) {
-      self.currentMeal = meal;
-    };
+    self.editMeal = function(meal) {
+      var mealCopy = angular.copy(meal);
+      self.openModal(meal, mealCopy);
+    }
 
     self.removeMeal = function() {
       var mealResource = new MealFactory(self.currentMeal);
@@ -44,9 +44,9 @@ angular.module('clientApp')
     self.saveSettings = function() {
       self.savingUser = true;
       UserFactory.update({ user_id: self.user.id }, self.user).$promise.then(
-        function(a,b) {
+        function() {
           self.savingUser = false;
-          self.errors['expected_calories'] = null;
+          self.errors.expected_calories = null;
         },
         function(response) {
           self.savingUser = false;
@@ -55,6 +55,26 @@ angular.module('clientApp')
           }
         }
       );
-    }
+    };
+
+    /* Modal interaction */
+    self.openModal = function(original, copy) {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'views/mealform.html',
+        controller: 'MealformCtrl',
+        controllerAs: 'modal',
+        size: 'sm',
+        resolve: {
+          meal: function() {
+            return copy;
+          }
+        }
+      });
+      
+      modalInstance.result.then(function(savedMeal) {
+        angular.copy(savedMeal, original);
+      });
+    };
 
   });
