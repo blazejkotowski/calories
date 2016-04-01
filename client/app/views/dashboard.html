@@ -23,19 +23,22 @@
 <div class="panel panel-default">
   <div class="panel-heading">List of your meals</div>
   <div class="panel-body">
-    <table class="table">
+    <button class="btn btn-success btn-sm" ng-click="dashboard.addMeal()">
+      <span class="glyphicon glyphicon-plus"></span>
+      Add new meal
+    </button>
+    <table class="table table-striped">
       <thead>
-        <th>ID</th>
         <th>Consumption date</th>
         <th>Consumption time</th>
         <th>Meal description</th>
         <th>Calories number</th>
+        <th>Edit</th>
         <th></th>
       </thead>
       <tbody>
-        <tr ng-repeat="meal in dashboard.meals">
-          <td>{{meal.id}}</td>
-          <td>{{meal.consumption_date}}</td>
+        <tr ng-repeat="meal in dashboard.meals | orderBy:dashboard.mealOrderValue">
+          <td>{{meal.consumption_date | date : 'dd MMMM yyyy'}}</td>
           <td>{{meal.consumption_time | date : 'HH:mm'}}</td>
           <td>{{meal.description}}</td>
           <td>{{meal.calories_number}}</td>

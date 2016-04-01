@@ -28,6 +28,22 @@ angular.module('clientApp')
       self.openModal(meal, mealCopy);
     };
 
+    self.addMeal = function() {
+      var newMeal = {
+        consumption_time: new Date(),
+        consumption_date: new Date()
+      };
+      self.openModal({}, newMeal);
+    };
+
+    self.mealOrderValue = function(meal) {
+      var date = new Date(meal.consumption_date);
+      var time = new Date(meal.consumption_time);
+      date.setHours(time.getHours());
+      date.setMinutes(time.getMinutes());
+      return -date;
+    };
+
      /* Modal interaction */
     self.openModal = function(original, copy) {
       var modalInstance = $uibModal.open({
@@ -35,7 +51,7 @@ angular.module('clientApp')
         templateUrl: 'views/mealform.html',
         controller: 'MealformCtrl',
         controllerAs: 'modal',
-        size: 'sm',
+        size: 'lg',
         resolve: {
           meal: function() {
             return copy;
@@ -49,8 +65,16 @@ angular.module('clientApp')
           var index = self.meals.indexOf(original);
           self.meals.splice(index, 1);
         } else {
-          /* Edit performed */
-          angular.copy(savedMeal, original);
+          /* Save performed */
+          $log.debug("saved time: ", savedMeal.consumption_time);
+          $log.debug("\noriginal time: ", original.consumption_time);
+          if(original.id) {
+            /* Update */
+            angular.copy(savedMeal, original);
+          } else {
+            /* Create */
+            self.meals.push(savedMeal);
+          }
         }
       });
     };

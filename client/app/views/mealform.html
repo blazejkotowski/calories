@@ -2,20 +2,34 @@
   <button type="button" class="close" ng-click="modal.close()"><span aria-hidden="true">&times;</span></button>
   <h4 class="modal-title">{{ modal.meal.id ? 'Edit' : 'Add'}} meal</h4>
 </div>
-<div class="modal-body">
-  <div class="form-group" ng-class="{'has-error': modal.errors.description}">
-    <label for="description">Description</label>
-    <input type="text" class="form-control" name="description" ng-model="modal.meal.description" ng-disabled="modal.saving"/>
-    <span class="help-block" ng-repeat="error in modal.errors.description">{{error}}</span>
+<div class="modal-body row">
+  <div class="col-sm-5 col-sm-offset-2">
+    <div class="form-group" ng-class="{'has-error': modal.errors.consumption_date}">
+      <label for="consumtpion_date">Consumption date</label>
+      <uib-datepicker ng-model="modal.meal.consumption_date" ng-disabled="modal.saving"></uib-datepicker>
+      <span class="help-block" ng-repeat="error in modal.errors.consumption_date">{{error}}</span>
+    </div>
   </div>
-  <div class="form-group" ng-class="{'has-error': modal.errors.calories_number}">
-    <label for="calories">Calories number</label>
-    <input type="number" class="form-control" name="calories" ng-model="modal.meal.calories_number" ng-disabled="modal.saving"/>
-    <span class="help-block" ng-repeat="error in modal.errors.calories_number">{{error}}</span>
+  <div class="col-sm-3">
+    <div class="form-group" ng-class="{'has-error': modal.errors.consumption_time}">
+      <label for="consumption_time">Consumption time</label>
+      <uib-timepicker ng-model="modal.meal.consumption_time" ng-disabled="modal.saving" show-meridian="false"></uib-timepicker>
+      <span class="help-block" ng-repeat="error in modal.errors.consumption_time">{{error}}</span>
+    </div>
+    <div class="form-group" ng-class="{'has-error': modal.errors.description}">
+      <label for="description">Description</label>
+      <input type="text" class="form-control" name="description" ng-model="modal.meal.description" ng-disabled="modal.saving"/>
+      <span class="help-block" ng-repeat="error in modal.errors.description">{{error}}</span>
+    </div>
+    <div class="form-group" ng-class="{'has-error': modal.errors.calories_number}">
+      <label for="calories">Calories number</label>
+      <input type="number" class="form-control" name="calories" ng-model="modal.meal.calories_number" ng-disabled="modal.saving"/>
+      <span class="help-block" ng-repeat="error in modal.errors.calories_number">{{error}}</span>
+    </div>
   </div>
 </div>
 <div class="modal-footer">
-  <button type="button" class="pull-left btn btn-danger" ng-click="modal.delete()" ng-disabled="modal.saving">Delete</button>
+  <button type="button" class="pull-left btn btn-danger" ng-click="modal.delete()" ng-disabled="modal.saving" ng-if="modal.meal.id">Delete</button>
   <button type="button" class="btn btn-default" ng-click="modal.close()" ng-disabled="modal.saving">Cancel</button>
   <button type="button" class="btn btn-primary" data-dismiss="false" ng-click="modal.save()" ng-disabled="modal.saving">Save</button>
 </div>
