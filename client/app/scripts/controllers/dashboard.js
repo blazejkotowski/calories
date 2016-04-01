@@ -17,6 +17,13 @@ angular.module('clientApp')
     self.savingMeal = false;
 
     self.errors = {};
+    self.filters = { 
+      dateStart: new Date(),
+      dateEnd: new Date(),
+      timeStart: new Date().setHours(0,0,0),
+      timeEnd: new Date().setHours(23,59,0),
+      applied: false
+    };
 
     self.caloriesExceeded = function() {
       return self.todaysCalories() > self.user.expected_calories;
@@ -81,8 +88,6 @@ angular.module('clientApp')
           self.meals.splice(index, 1);
         } else {
           /* Save performed */
-          $log.debug("saved time: ", savedMeal.consumption_time);
-          $log.debug("\noriginal time: ", original.consumption_time);
           if(original.id) {
             /* Update */
             angular.copy(savedMeal, original);
@@ -94,6 +99,26 @@ angular.module('clientApp')
       });
     };
 
+    /* Filtering */
+    self.setFilters = function() {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'views/filtersform.html',
+        controller: 'FiltersformCtrl',
+        controllerAs: 'modal',
+        size: 'md',
+        resolve: {
+          filters: function() {
+            return self.filters;
+          }
+        }
+      });
+
+      modalInstance.result.then(function(filters) {
+        /* Applying filters */
+        self.filters = filters;
+      });
+    };
 
     /* Managing user */
     self.saveSettings = function() {

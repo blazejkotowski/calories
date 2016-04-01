@@ -28,6 +28,12 @@
       <span class="glyphicon glyphicon-plus"></span>
       Add new meal
     </button>
+    <button class="btn btn-primary btn-sm" ng-click="dashboard.setFilters()">
+      <span class="glyphicon glyphicon-filter"></span>
+      Set filters
+    </button>
+    <input type="checkbox" id="apply_filters" ng-model="dashboard.filters.applied" style="margin-left:5px"/>
+    <label for="apply_filters" style="font-size: 0.8em; position: relative; bottom: 3px;">Apply filters</label>
     <table class="table table-striped">
       <thead>
         <th>Consumption date</th>
@@ -38,7 +44,7 @@
         <th></th>
       </thead>
       <tbody>
-        <tr ng-repeat="meal in dashboard.meals | orderBy:dashboard.mealOrderValue">
+        <tr ng-repeat="meal in dashboard.meals | dtrange:dashboard.filters | orderBy:dashboard.mealOrderValue">
           <td>{{meal.consumption_date | date : 'dd MMMM yyyy'}}</td>
           <td>{{meal.consumption_time | date : 'HH:mm'}}</td>
           <td>{{meal.description}}</td>

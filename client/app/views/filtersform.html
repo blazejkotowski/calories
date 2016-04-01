@@ -1,0 +1,52 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="modal.close()"><span aria-hidden="true">&times;</span></button>
+  <h4 class="modal-title">Filter your meals</h4>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="form-group">
+        <label for="date_start">Start date</label>
+        <p class="input-group">
+          <input type="text" class="form-control" name="date_start" ng-model="modal.filters.dateStart" uib-datepicker-popup="{{modal.dateFormat}}" is-open="modal.dateStartPicker.opened" date-format="{{modal.dateFormat}}" />
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="modal.pickDateStart()">
+              <span class="glyphicon glyphicon-calendar"></span>
+            </button>
+          </span>
+        </p>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="form-group">
+        <label for="date_end">End date</label>
+        <p class="input-group">
+          <input type="text" class="form-control" name="date_end" ng-model="modal.filters.dateEnd" uib-datepicker-popup="{{modal.dateFormat}}" is-open="modal.dateEndPicker.opened" date-format="{{modal.dateFormat}}" />
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="modal.pickDateEnd()">
+              <span class="glyphicon glyphicon-calendar"></span>
+            </button>
+          </span>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="form-group">
+        <label for="time_start">Start time</label>
+        <uib-timepicker ng-model="modal.filters.timeStart" show-meridian="false"></uib-timepicker>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="form-group">
+        <label for="time_end">End time</label>
+        <uib-timepicker ng-model="modal.filters.timeEnd" show-meridian="false"></uib-timepicker>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-default" ng-click="modal.cancel()">Cancel</button>
+  <button type="button" class="btn btn-primary" ng-click="modal.apply()">Apply</button>
+</div>
