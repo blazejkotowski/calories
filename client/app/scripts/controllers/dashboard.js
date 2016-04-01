@@ -26,19 +26,35 @@ angular.module('clientApp')
     self.editMeal = function(meal) {
       var mealCopy = angular.copy(meal);
       self.openModal(meal, mealCopy);
-    }
-
-    self.removeMeal = function() {
-      var mealResource = new MealFactory(self.currentMeal);
-      mealResource.$delete();
-      var index = self.meals.indexOf(self.currentMeal);
-      self.meals.splice(index, 1);
     };
 
-    self.saveMeal = function() {
-      var mealResource = new MealFactory(self.currentMeal);
-      mealResource.$update();
+     /* Modal interaction */
+    self.openModal = function(original, copy) {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'views/mealform.html',
+        controller: 'MealformCtrl',
+        controllerAs: 'modal',
+        size: 'sm',
+        resolve: {
+          meal: function() {
+            return copy;
+          }
+        }
+      });
+      
+      modalInstance.result.then(function(savedMeal) {
+        if(savedMeal === null) {
+          /* Delete performed */
+          var index = self.meals.indexOf(original);
+          self.meals.splice(index, 1);
+        } else {
+          /* Edit performed */
+          angular.copy(savedMeal, original);
+        }
+      });
     };
+
 
     /* Managing user */
     self.saveSettings = function() {
@@ -56,25 +72,4 @@ angular.module('clientApp')
         }
       );
     };
-
-    /* Modal interaction */
-    self.openModal = function(original, copy) {
-      var modalInstance = $uibModal.open({
-        animation: true,
-        templateUrl: 'views/mealform.html',
-        controller: 'MealformCtrl',
-        controllerAs: 'modal',
-        size: 'sm',
-        resolve: {
-          meal: function() {
-            return copy;
-          }
-        }
-      });
-      
-      modalInstance.result.then(function(savedMeal) {
-        angular.copy(savedMeal, original);
-      });
-    };
-
   });
