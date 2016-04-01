@@ -18,11 +18,26 @@ angular.module('clientApp')
 
     self.errors = {};
 
+    self.caloriesExceeded = function() {
+      return self.todaysCalories() > self.user.expected_calories;
+    };
+
+    self.todaysCalories = function() {
+      var todaysDate = new Date();
+      return self.meals.reduce(function(previous, current) {
+        var currentDate = new Date(current.consumption_date);
+        if(currentDate.toDateString() == todaysDate.toDateString()) {
+          previous += current.calories_number;
+        }
+        return previous;
+      }, 0);
+    };
+
+    /* Managing meals */
     var mealsResponse = MealFactory.get({ user_id: self.user.id }, function() {
       self.meals = mealsResponse.meals;  
     });
 
-    /* Managing meals */
     self.editMeal = function(meal) {
       var mealCopy = angular.copy(meal);
       self.openModal(meal, mealCopy);

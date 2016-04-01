@@ -1,19 +1,20 @@
 <h1>Hello {{ dashboard.user.name }}!</h1>
-<div class="panel panel-default">
+<div class="panel" ng-class="{ 'panel-default': !dashboard.calories_exceeded(), 'panel-danger': dashboard.caloriesExceeded()}">
   <div class="panel-heading">Expected daily calories</div>
   <div class="panel-body">
     <div class="alert alert-danger" ng-if="dashboard.errors.expected_calories">The value {{ dashboard.errors.expected_calories }}</div>
+    <div class="alert alert-danger" ng-if="dashboard.caloriesExceeded()">You have exceeded your expected daily calories number!</div>
     <div class="col-sm-6">
       <p class="text-right">
         This the amount of calories you would maximally consume every day. 
-        If you exceed this amount, it will be marked red.
+        If you exceed this amount, it will be marked with a red color.
       </p>
     </div>
     <div class="col-sm-6">
       <form ng-submit="dashboard.updateExpectedCalories()">
-        <div class="form-group">
+        <div class="form-group" ng-class="{ 'has-error': (dashboard.calories_exceeded() || dashboard.errors.expected_calories )}">
           <input class="form-control" ng-model="dashboard.user.expected_calories" ng-disabled="dashboard.savingUser" />
-          <span class="helper-block"></span>
+          <span class="helper-block">You have consumed {{dashboard.todaysCalories()}} so far.</span>
         </div>
         <button type="submit" class="btn btn-default" ng-click="dashboard.saveSettings()" ng-disabled="dashboard.savingUser">Save</button>
       </form>
