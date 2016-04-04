@@ -12,11 +12,14 @@ To start the application you have to clone the repository to the development env
 
 ##### API
 After cloning the repository, install *API* dependencies.:
+
 ```sh
 $ cd api
 $ bundle install
 ```
+
 You have to create the database configuration before starting the app. Database configuration file is located in *api/config/database.yml*. A file content should like similiar to the following:
+
 ```yaml
 development:
   adapter: postgresql
@@ -27,7 +30,9 @@ development:
   user: database_user
   password: database_password
 ```
+
 After that, you are ready to migrate the database and start the *API* on your local machine:
+
 ```sh
 $ bundle exec rake db:setup
 $ bundle exec rails server RAILS_ENV=development
@@ -40,11 +45,14 @@ $ bundle exec rspec spec
 
 ##### Front-end
 To start the front-end application you have to install dependencies with **bower** first. Type the following from the root directory of repository:
+
 ```sh
 $ cd client
 $ bower install
 ```
+
 Now run build and run the app on local server:
+
 ```sh
 $ grunt build
 $ grunt serve:dist
