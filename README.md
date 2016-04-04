@@ -39,6 +39,7 @@ $ bundle exec rails server RAILS_ENV=development
 ```
 
 You can also start the tests to ensure *API* behaves as expected:
+
 ```sh
 $ bundle exec rspec spec
 ```
