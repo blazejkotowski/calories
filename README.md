@@ -1,6 +1,6 @@
 # Calories App
 
-Calories is an application for controlling the calories consumption. It is an final effect of a part of recruitment process by TopTal.
+Calories is an application for controlling the calories consumption. 
 
 ### Tech
 Application consists of two main parts:
@@ -67,4 +67,4 @@ A few words about *API*:
 - It is fully rest which means it is also stateless. The authentication is realized using **JWT** standard.
 
 ### Author
-Błażej Kotowski (kotowski.blazej@gmail.com)
+Błażej Kotowski

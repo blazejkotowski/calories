@@ -19,8 +19,13 @@ angular.module('clientApp')
     };
 
     self.save = function() {
-      var callbackSuccess = function(meal) {
-        $uibModalInstance.close(self.meal);
+      var callbackSuccess = function(response) {
+        if(response.meal) {
+          $uibModalInstance.close(response.meal);
+        }
+        else {
+          $uibModalInstance.close(self.meal);
+        }
       };
       var callbackFailure = function(response) {
         self.saving = false;
@@ -28,6 +33,7 @@ angular.module('clientApp')
       };
 
       self.saving = true;
+      $log.debug(meal);
       if(meal.id) {
         /* Updating exising meal */
         MealFactory.update({ 

@@ -106,9 +106,13 @@ angular.module('clientApp')
           /* Save performed */
           if(original.id) {
             /* Update */
+            $log.debug("Update");
+            $log.debug(savedMeal);
             angular.copy(savedMeal, original);
           } else {
             /* Create */
+            $log.debug("Create");
+            $log.debug(savedMeal);
             self.meals.push(savedMeal);
           }
         }
